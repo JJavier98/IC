@@ -1,0 +1,31 @@
+IC
+
+Como encender luces?:
+
+3 reglas básicas:
+
+1.- Si una habitación no está vacía y hay poca luz -> la enciendo.
+2.- Si una habitación está vacía y la luz está encendida -> la apago.
+3.- SI la luz está encendida y hay mucha luminosidad -> apago la luz.
+
+Cuál es la luminosidad necesaria para encender la luz?:
+	Salon: 300 lúmenes
+	Dormitorio: 150 lúmenes
+	Pasillo y cocina: 200 lúmenes 
+	Despacho: 500 lúmenes
+
+Una habitación está bien iluminada tendrá el doble de lúmenes necesarios para encender la luz.
+
+Para decidir si una habitación está vacía:
+	Si hay movimiento -> no vacía
+	Si no hay movimiento -> puede no haber nadie (no es seguro)
+	Si una habitación parece vacía durante 10s -> consideramos vacía
+
+Cuando se detecta movimiento intentar explicar a que se debe esa detección:
+	Si solo hay una habitación desde la que es posible pasar a ella deduzco que ha pasado desde esa habitación a esta.
+	Si hemos podido entrar a esta habitación desde varias ha podido pasar desde cualquiera de ellas.
+
+Algo se considera reciente si ha pasado hace 3 segundos o menos
+Si tenemos alguna creencia sobre un suceso reciente y pasados esos 3 segundos no confirmamos la suposición, la descartamos.
+
+Cómo elimino posibles habitaciones desde las que he podido entrar a otra (caso 2º anterior):
