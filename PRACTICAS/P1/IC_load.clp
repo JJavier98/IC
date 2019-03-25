@@ -115,6 +115,7 @@
 	(valor movimiento Entrada on)
 	(valor luminosidad Entrada 750)
 	(valor estadoluz Entrada on)
+	;(valor estadoluz Entrada off) ejemplo para probar ultima desactivacion
 	)
 
 ;::::::::::: VALORES DE SENSORES QUE ME TIENEN QUE PROPORCIONAR - ESTOS SON DE PRUEBA ::::::::::
