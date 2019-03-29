@@ -16,6 +16,20 @@ Cuál es la luminosidad necesaria para encender la luz?:
 
 Una habitación está bien iluminada tendrá el doble de lúmenes necesarios para encender la luz.
 
+cuando un sensor de movimiento pasa a estado ON tarda 1min en m¡volver a escanear
+Algunas habitaciones podemos considerar no poner luces inteligentes. (despensa)
+
+///////////////////////////////////////////////////////////////////////////////
+Estados de una habitación:
+activa, inactiva, parece innactiva
+
+activa -> mon_on -> activa
+inactiva -> mov_on -> activa
+parece inactiva -> mov_on -> activa
+
+parece inactiva -> mov_off (10s) -> inactiva
+///////////////////////////////////////////////////////////////////////////////
+
 Para decidir si una habitación está vacía:
 	Si hay movimiento -> no vacía
 	Si no hay movimiento -> puede no haber nadie (no es seguro)
