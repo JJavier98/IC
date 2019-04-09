@@ -170,6 +170,12 @@
 	(maximo Dormitorio 1000)
 	(maximo Cocina 600)
 	(maximo Baño 400)
+	(estado_habitacion Comedor vacia)
+	(estado_habitacion Salon1 vacia)
+	(estado_habitacion Salon2 vacia)
+	(estado_habitacion Dormitorio vacia)
+	(estado_habitacion Cocina vacia)
+	(estado_habitacion Baño vacia)
 	)
 
 ;::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -360,26 +366,31 @@
 ;::::::::::: REGLA: INTERRUPTORES :::::::::::
 (defrule InterruptorCambiarAOff
 	(Habitacion ?Hab)
-	?Borrar <- (accion pulsador_luz ?Hab cambiar))
+	?Borrar <- (accion pulsador_luz ?Hab cambiar)
 	(ultimo_registro estadoluz ?Hab on)
 =>
 	(assert (valor estadoluz ?Hab off))
+	)
 
 (defrule InterruptorCambiarAOn
 	(Habitacion ?Hab)
-	?Borrar <- (accion pulsador_luz ?Hab cambiar))
+	?Borrar <- (accion pulsador_luz ?Hab cambiar)
 	(ultimo_registro estadoluz ?Hab off)
 =>
 	(assert (valor estadoluz ?Hab on))
+	)
 
 (defrule InterruptorApagar
 	(Habitacion ?Hab)
-	?Borrar <- (accion pulsador_luz ?Hab apagar))
+	?Borrar <- (accion pulsador_luz ?Hab apagar)
 =>
 	(assert (valor estadoluz ?Hab off))
+	)
 
 (defrule InterruptorEncender
 	(Habitacion ?Hab)
-	?Borrar <- (accion pulsador_luz ?Hab cambiar))
+	?Borrar <- (accion pulsador_luz ?Hab encender)
 =>
 	(assert (valor estadoluz ?Hab on))
+	)
+
