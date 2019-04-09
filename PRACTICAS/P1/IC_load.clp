@@ -305,3 +305,66 @@
 	(valor_registrado ?t4&:(and (>= ?t4 ?t2) (< ?t4 ?t1)) ?tipo ?Hab off); valor registrado inmediatamente anterior
 =>
 	(assert (ultima_activacion ?tipo ?Hab ?t1) ) )
+
+( defrule PreInforme
+    (Habitacion ?Hab)
+    ?Borrar <- (informe ?Hab)
+    (valor_registrado ?t3 ? ?Hab ?) ; t3 son todos los tiempos
+    (valor_registrado ?t1 &: (>= ?t1 ?t3 ) ?tipo ?Hab ?valor) ; t1 es el menor tiempo
+=>
+    (assert (AuxInforme ?t1 ?tipo ?Hab ?valor))
+    (retract ?Borrar)
+    (printout t crlf "Tiempo: " ?t1 " Tipo: " ?tipo " Habitación: " ?Hab " Valor: " ?valor crlf)
+)
+
+( defrule Informe
+    (Habitacion ?Hab)
+    ?Borrar <- (AuxInforme ?t2 ? ?Hab ?) ; t2 es el mayor tiempo actual
+    (valor_registrado ?t3&~t2 ? ?Hab ?) ; t3 son todos los tiempos menos el mayor 
+    (valor_registrado ?t1 &:(and(>= ?t1 ?t3 )(< ?t1 ?t2)) ?tipo ?Hab ?valor) ; t1 es justo anterior al mayor, pero mayor o igual que todos  
+=>
+    (assert (AuxInforme ?t1 ?tipo ?Hab ?valor))
+    (printout t crlf "Tiempo: " ?t1 " Tipo: " ?tipo " Habitación: " ?Hab " Valor: " ?valor crlf)
+    (retract ?Borrar)
+)
+
+( defrule PosInforme
+    ?Borrar <- (AuxInforme ?t1 ? ?Hab ?) ; t2 es el mayor tiempo actual
+=>
+    (retract ?Borrar)
+)
+; ENCENDER LUZ
+( defrule EncenderLuz
+    (Habitacion ?Hab)
+    ?Borrar <- (accion pulsador_luz ?Hab encender)
+=>
+    (assert (valor estadoluz ?Hab on))
+    (retract (?Borrar)
+)
+
+; APAGAR LUZ
+( defrule ApagarLuz
+    (Habitacion ?Hab)
+    ?Borrar <- (accion pulsador_luz ?Hab apagar)
+=>
+    (assert (valor estadoluz ?Hab off))
+    (retract (?Borrar)
+)
+
+; CAMBIAR DE OFF A ON
+( defrule CambiarLuzOff2On
+    ?Borrar <- (accion pulsador_luz ?Hab cambiar)
+    (ultimo_registro estadoluz ?Hab off)
+=>
+    (assert (valor estadoluz ?Hab on))
+    (retract ?Borrar)
+)
+
+; CAMBIAR DE ON A OFF
+( defrule CambiarLuzOn2Off
+    ?Borrar <- (accion pulsador_luz ?Hab cambiar)
+    (ultimo_registro estadoluz ?Hab on)
+=>
+    (assert (valor estadoluz ?Hab off))
+    (retract ?Borrar)
+)
