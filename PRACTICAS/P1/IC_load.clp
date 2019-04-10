@@ -320,8 +320,8 @@
 ( defrule Informe
     (Habitacion ?Hab)
     ?Borrar <- (AuxInforme ?t2 ? ?Hab ?) ; t2 es el mayor tiempo actual
-    (valor_registrado ?t3&~t2 ? ?Hab ?) ; t3 son todos los tiempos menos el mayor 
-    (valor_registrado ?t1 &:(and(>= ?t1 ?t3 )(< ?t1 ?t2)) ?tipo ?Hab ?valor) ; t1 es justo anterior al mayor, pero mayor o igual que todos  
+    (valor_registrado ?t3 ?tipo1 ?Hab ?) ; t3 son todos los tiempos menos el mayor 
+    (valor_registrado ?t1 &:(and(>= ?t1 ?t3 )(<= ?t1 ?t2)) ?tipo ?Hab ?valor) ; t1 es justo anterior al mayor, pero mayor o igual que todos  
 =>
     (assert (AuxInforme ?t1 ?tipo ?Hab ?valor))
     (printout t crlf "Tiempo: " ?t1 " Tipo: " ?tipo " Habitación: " ?Hab " Valor: " ?valor crlf)
