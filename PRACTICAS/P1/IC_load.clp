@@ -115,7 +115,6 @@
 	(valor movimiento Entrada on)
 	(valor luminosidad Entrada 750)
 	(valor estadoluz Entrada on)
-	;(valor estadoluz Entrada off) ejemplo para probar ultima desactivacion
 	)
 
 ;::::::::::: VALORES DE SENSORES QUE ME TIENEN QUE PROPORCIONAR - ESTOS SON DE PRUEBA ::::::::::
@@ -150,6 +149,38 @@
 	(ultimo_registro movimiento Ropero -4)
 	(ultimo_registro luminosidad Ropero -4)
 	(ultimo_registro estadoluz Ropero -4))
+
+;::::::::::: HABITACIONES CON MANEJO INTELIGENTE ::::::::::
+(deffacts Manejo
+	(Manejo_inteligente_luces Comedor)
+	(Manejo_inteligente_luces Entrada)
+	(Manejo_inteligente_luces Salon1)
+	(Manejo_inteligente_luces Salon2)
+	(Manejo_inteligente_luces Dormitorio)
+	(Manejo_inteligente_luces Cocina)
+	(Manejo_inteligente_luces Baño)
+	(luminosidad_minima Comedor 200)
+	(luminosidad_minima Entrada 400)
+	(luminosidad_minima Salon1 300)
+	(luminosidad_minima Salon2 300)
+	(luminosidad_minima Dormitorio 500)
+	(luminosidad_minima Cocina 300)
+	(luminosidad_minima Baño 200)
+	(luminosidad_maxima Comedor 400)
+	(luminosidad_maxima Entrada 800)
+	(luminosidad_maxima Salon1 600)
+	(luminosidad_maxima Salon2 600)
+	(luminosidad_maxima Dormitorio 1000)
+	(luminosidad_maxima Cocina 600)
+	(luminosidad_maxima Baño 400)
+	;(estado_habitacion Comedor vacia)
+	;(estado_habitacion Entrada vacia)
+	;(estado_habitacion Salon1 vacia)
+	;(estado_habitacion Salon2 vacia)
+	;(estado_habitacion Dormitorio vacia)
+	;(estado_habitacion Cocina vacia)
+	;(estado_habitacion Baño vacia)
+	)
 
 ;::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ;:::::::::::::::::::::::::: FUNCIONES DE TIEMPO :::::::::::::::::::::::::::::::::::::
@@ -299,72 +330,67 @@
 
 (defrule Off2On
 	(Habitacion ?Hab) ; existe la habitacion
-	(ultimo_registro ?tipo ?Hab ?t1) ; necesitamos saber el timepo del ultimo registrado para obtener su valor
+	(ultimo_registro ?tipo ?Hab ?t1) ; necesitamos saber el tiempo del ultimo registrado para obtener su valor
 	(valor_registrado ?t1 ?tipo ?Hab on) ; valor registrado que coincide con el ultimo registro
 	(valor_registrado ?t2&~?t1 ?tipo ?Hab $?) ; demás valores de valor_registrado
 	(valor_registrado ?t4&:(and (>= ?t4 ?t2) (< ?t4 ?t1)) ?tipo ?Hab off); valor registrado inmediatamente anterior
 =>
 	(assert (ultima_activacion ?tipo ?Hab ?t1) ) )
 
-( defrule PreInforme
-    (Habitacion ?Hab)
-    ?Borrar <- (informe ?Hab)
-    (valor_registrado ?t3 ? ?Hab ?) ; t3 son todos los tiempos
-    (valor_registrado ?t1 &: (>= ?t1 ?t3 ) ?tipo ?Hab ?valor) ; t1 es el menor tiempo
+(defrule preInforme
+	(Habitacion ?Hab) ; existe la habitación
+	?Borrar <- (informe ?Hab) ; borramos el hecho que nos pide el informe
+	(valor_registrado ?t1 ? ?Hab ?) ; cogemos el conjunto de todos los valores registrados
+	(valor_registrado ?t2&:(>= ?t2 ?t1) ?tipo2 ?Hab ?value2) ; cogemos el valor registrado con mayor tiempo, es decir, el más reciente
 =>
-    (assert (AuxInforme ?t1 ?tipo ?Hab ?valor))
-    (retract ?Borrar)
-    (printout t crlf "Tiempo: " ?t1 " Tipo: " ?tipo " Habitación: " ?Hab " Valor: " ?valor crlf)
+	(assert(preInf ?t2 ?tipo2 ?Hab ?value2) ) ; añadimos el hecho de que hemos empezado el preinforme
+	(retract ?Borrar) ; Borramos el hecho que pide el informe
+	(printout t "INFORME: " crlf) ; imprimimos el informe
+	(printout t crlf "Tiempo: " ?t2 " Tipo: " ?tipo2 " Habitación: " ?Hab " Valor: " ?value2))
+
+
+
+=>
+	(retract ?Borrar) ; borramos el preinforme
+	(assert (preInf ?t3 ?tipo3 ?Hab ?value3)) ; incluimos un preinforme con el nuevo valor
+	(printout t crlf "Tiempo: " ?t3 " Tipo: " ?tipo3 " Habitación: " ?Hab " Valor: " ?value3) ; inmprimimos el informe
+	)
+
+(defrule posInforme
+	(Habitacion ?Hab) ; existe la habitación
+	?Borrar <- (preInf ?t1 ?tipo ?Hab ?value) ; 
+=>
+	(retract ?Borrar)
 )
 
-( defrule Informe
-    (Habitacion ?Hab)
-    ?Borrar <- (AuxInforme ?t2 ? ?Hab ?) ; t2 es el mayor tiempo actual
-    (valor_registrado ?t3 ?tipo1 ?Hab ?) ; t3 son todos los tiempos menos el mayor 
-    (valor_registrado ?t1 &:(and(>= ?t1 ?t3 )(<= ?t1 ?t2)) ?tipo ?Hab ?valor) ; t1 es justo anterior al mayor, pero mayor o igual que todos  
+;::::::::::: REGLA: INTERRUPTORES :::::::::::
+(defrule InterruptorCambiarAOff
+	(Habitacion ?Hab)
+	?Borrar <- (accion pulsador_luz ?Hab cambiar)
+	(ultimo_registro estadoluz ?Hab on)
 =>
-    (assert (AuxInforme ?t1 ?tipo ?Hab ?valor))
-    (printout t crlf "Tiempo: " ?t1 " Tipo: " ?tipo " Habitación: " ?Hab " Valor: " ?valor crlf)
-    (retract ?Borrar)
-)
+	(assert (valor estadoluz ?Hab off))
+	)
 
-( defrule PosInforme
-    ?Borrar <- (AuxInforme ?t1 ? ?Hab ?) ; t2 es el mayor tiempo actual
+(defrule InterruptorCambiarAOn
+	(Habitacion ?Hab)
+	?Borrar <- (accion pulsador_luz ?Hab cambiar)
+	(ultimo_registro estadoluz ?Hab off)
 =>
-    (retract ?Borrar)
-)
-; ENCENDER LUZ
-( defrule EncenderLuz
-    (Habitacion ?Hab)
-    ?Borrar <- (accion pulsador_luz ?Hab encender)
-=>
-    (assert (valor estadoluz ?Hab on))
-    (retract (?Borrar)
-)
+	(assert (valor estadoluz ?Hab on))
+	)
 
-; APAGAR LUZ
-( defrule ApagarLuz
-    (Habitacion ?Hab)
-    ?Borrar <- (accion pulsador_luz ?Hab apagar)
+(defrule InterruptorApagar
+	(Habitacion ?Hab)
+	?Borrar <- (accion pulsador_luz ?Hab apagar)
 =>
-    (assert (valor estadoluz ?Hab off))
-    (retract (?Borrar)
-)
+	(assert (valor estadoluz ?Hab off))
+	)
 
-; CAMBIAR DE OFF A ON
-( defrule CambiarLuzOff2On
-    ?Borrar <- (accion pulsador_luz ?Hab cambiar)
-    (ultimo_registro estadoluz ?Hab off)
+(defrule InterruptorEncender
+	(Habitacion ?Hab)
+	?Borrar <- (accion pulsador_luz ?Hab encender)
 =>
-    (assert (valor estadoluz ?Hab on))
-    (retract ?Borrar)
-)
+	(assert (valor estadoluz ?Hab on))
+	)
 
-; CAMBIAR DE ON A OFF
-( defrule CambiarLuzOn2Off
-    ?Borrar <- (accion pulsador_luz ?Hab cambiar)
-    (ultimo_registro estadoluz ?Hab on)
-=>
-    (assert (valor estadoluz ?Hab off))
-    (retract ?Borrar)
-)
