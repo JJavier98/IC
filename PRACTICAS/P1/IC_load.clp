@@ -349,11 +349,7 @@
 	(printout t crlf "Tiempo: " ?t2 " Tipo: " ?tipo2 " Habitación: " ?Hab " Valor: " ?value2))
 
 
-(defrule Informe
-	(Habitacion ?Hab) ; existe la habitación
-	?Borrar <- (preInf ?t1 ?tipo ?Hab ?value) ; borramos el último hecho de preinforme generado
-	(valor_registrado ?t2&~?t1 ?tipo2 ?Hab ?value2) ; cogemos todo el conjunto de valores registrados que no cincidan con el de preinforme
-	(valor_registrado ?t3&:(and (>= ?t3 ?t2) (< ?t3 ?t1)) ?tipo3 ?Hab ?value3) ; cogemos el más reciente de los valores registrados que sea menor que preinforme
+
 =>
 	(retract ?Borrar) ; borramos el preinforme
 	(assert (preInf ?t3 ?tipo3 ?Hab ?value3)) ; incluimos un preinforme con el nuevo valor
