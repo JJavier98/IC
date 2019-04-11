@@ -77,9 +77,9 @@
     (posible_pasar ?Hab ?Hab1)
     (ultimo_registro movimiento ?Hab1 ?Tiempo1)
     (valor_registrado ?Tiempo1 movimiento ?Hab1 on)
-    (> ?Tiempo1 ?Tiempo)
+    (> ?Tiempo1 ?time)
 =>
-    (if(<= (- ?Tiempo1 ?Tiempo) 3)
+    (if(<= (- ?Tiempo1 ?time) 3)
         then
         (assert (accion pulsador_luz ?Hab apagar))
         (retract ?Borrar)
