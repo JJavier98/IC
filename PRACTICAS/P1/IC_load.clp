@@ -85,70 +85,113 @@
 
 ;::::::::::: VALORES DE SENSORES QUE ME TIENEN QUE PROPORCIONAR - ESTOS SON DE PRUEBA ::::::::::
 (deffacts Sensores
-	(valor movimiento Salon1 on)
-	(valor luminosidad Salon1 750)
-	(valor estadoluz Salon1 on)
-	(valor movimiento Salon2 on)
-	(valor luminosidad Salon2 750)
-	(valor estadoluz Salon2 on)
-	(valor movimiento Comedor on)
-	(valor luminosidad Comedor 750)
-	(valor estadoluz Comedor on)
-	(valor movimiento Pasillo on)
-	(valor luminosidad Pasillo 750)
-	(valor estadoluz Pasillo on)
-	(valor movimiento Dormitorio on)
-	(valor luminosidad Dormitorio 750)
-	(valor estadoluz Dormitorio on)
-	(valor movimiento Ropero on)
-	(valor luminosidad Ropero 750)
-	(valor estadoluz Ropero on)
-	(valor movimiento Cocina on)
-	(valor luminosidad Cocina 750)
-	(valor estadoluz Cocina on)
-	(valor movimiento Garaje on)
-	(valor luminosidad Garaje 750)
-	(valor estadoluz Garaje on)
-	(valor movimiento Baño on)
-	(valor luminosidad Baño 750)
-	(valor estadoluz Baño on)
-	(valor movimiento Entrada on)
-	(valor luminosidad Entrada 750)
-	(valor estadoluz Entrada on)
+	(valor movimiento Salon1 off)
+	(valor luminosidad Salon1 400)
+	(valor estadoluz Salon1 off)
+	(valor movimiento Salon2 off)
+	(valor luminosidad Salon2 400)
+	(valor estadoluz Salon2 off)
+	(valor movimiento Comedor off)
+	(valor luminosidad Comedor 300)
+	(valor estadoluz Comedor off)
+	(valor movimiento Pasillo off)
+	(valor luminosidad Pasillo 400)
+	(valor estadoluz Pasillo off)
+	(valor movimiento Dormitorio off)
+	(valor luminosidad Dormitorio 600)
+	(valor estadoluz Dormitorio off)
+	(valor movimiento Ropero off)
+	(valor luminosidad Ropero 400)
+	(valor estadoluz Ropero off)
+	(valor movimiento Cocina off)
+	(valor luminosidad Cocina 400)
+	(valor estadoluz Cocina off)
+	(valor movimiento Garaje off)
+	(valor luminosidad Garaje 400)
+	(valor estadoluz Garaje off)
+	(valor movimiento Baño off)
+	(valor luminosidad Baño 300)
+	(valor estadoluz Baño off)
+	(valor movimiento Entrada off)
+	(valor luminosidad Entrada 500)
+	(valor estadoluz Entrada off)
 	)
 
 ;::::::::::: VALORES DE SENSORES QUE ME TIENEN QUE PROPORCIONAR - ESTOS SON DE PRUEBA ::::::::::
 (deffacts UltimosRegistradosPorDefectoParaQueFuncioneEsto
-	(ultimo_registro movimiento Entrada -4)
-	(ultimo_registro luminosidad Entrada -4)
-	(ultimo_registro estadoluz Entrada -4)
-	(ultimo_registro movimiento Comedor -4)
-	(ultimo_registro luminosidad Comedor -4)
-	(ultimo_registro estadoluz Comedor -4)
-	(ultimo_registro movimiento Salon1 -4)
-	(ultimo_registro luminosidad Salon1 -4)
-	(ultimo_registro estadoluz Salon1 -4)
-	(ultimo_registro movimiento Salon2 -4)
-	(ultimo_registro luminosidad Salon2 -4)
-	(ultimo_registro estadoluz Salon2 -4)
-	(ultimo_registro movimiento Dormitorio -4)
-	(ultimo_registro luminosidad Dormitorio -4)
-	(ultimo_registro estadoluz Dormitorio -4)
-	(ultimo_registro movimiento Cocina -4)
-	(ultimo_registro luminosidad Cocina -4)
-	(ultimo_registro estadoluz Cocina -4)
-	(ultimo_registro movimiento Baño -4)
-	(ultimo_registro luminosidad Baño -4)
-	(ultimo_registro estadoluz Baño -4)
-	(ultimo_registro movimiento Pasillo -4)
-	(ultimo_registro luminosidad Pasillo -4)
-	(ultimo_registro estadoluz Pasillo -4)
-	(ultimo_registro movimiento Garaje -4)
-	(ultimo_registro luminosidad Garaje -4)
-	(ultimo_registro estadoluz Garaje -4)
-	(ultimo_registro movimiento Ropero -4)
-	(ultimo_registro luminosidad Ropero -4)
-	(ultimo_registro estadoluz Ropero -4))
+	(ultimo_registro movimiento Entrada -1)
+	(ultimo_registro luminosidad Entrada -1)
+	(ultimo_registro estadoluz Entrada -1)
+	(ultimo_registro movimiento Comedor -1)
+	(ultimo_registro luminosidad Comedor -1)
+	(ultimo_registro estadoluz Comedor -1)
+	(ultimo_registro movimiento Salon1 -1)
+	(ultimo_registro luminosidad Salon1 -1)
+	(ultimo_registro estadoluz Salon1 -1)
+	(ultimo_registro movimiento Salon2 -1)
+	(ultimo_registro luminosidad Salon2 -1)
+	(ultimo_registro estadoluz Salon2 -1)
+	(ultimo_registro movimiento Dormitorio -1)
+	(ultimo_registro luminosidad Dormitorio -1)
+	(ultimo_registro estadoluz Dormitorio -1)
+	(ultimo_registro movimiento Cocina -1)
+	(ultimo_registro luminosidad Cocina -1)
+	(ultimo_registro estadoluz Cocina -1)
+	(ultimo_registro movimiento Baño -1)
+	(ultimo_registro luminosidad Baño -1)
+	(ultimo_registro estadoluz Baño -1)
+	(ultimo_registro movimiento Pasillo -1)
+	(ultimo_registro luminosidad Pasillo -1)
+	(ultimo_registro estadoluz Pasillo -1)
+	(ultimo_registro movimiento Garaje -1)
+	(ultimo_registro luminosidad Garaje -1)
+	(ultimo_registro estadoluz Garaje -1)
+	(ultimo_registro movimiento Ropero -1)
+	(ultimo_registro luminosidad Ropero -1)
+	(ultimo_registro estadoluz Ropero -1))
+
+;::::::::::: VALORES DE SENSORES QUE ME TIENEN QUE PROPORCIONAR - ESTOS SON DE PRUEBA ::::::::::
+(deffacts UltimasDesactivacionesYActivaciones
+	(ultima_activacion movimiento Entrada -1)
+	(ultima_desactivacion estadoluz Entrada 0)
+	(ultima_activacion movimiento Comedor -1)
+	(ultima_desactivacion estadoluz Comedor 0)
+	(ultima_activacion movimiento Salon1 -1)
+	(ultima_desactivacion estadoluz Salon1 0)
+	(ultima_activacion movimiento Salon2 -1)
+	(ultima_desactivacion estadoluz Salon2 0)
+	(ultima_activacion movimiento Dormitorio -1)
+	(ultima_desactivacion estadoluz Dormitorio 0)
+	(ultima_activacion movimiento Cocina -1)
+	(ultima_desactivacion estadoluz Cocina 0)
+	(ultima_activacion movimiento Baño -1)
+	(ultima_desactivacion estadoluz Baño 0)
+	(ultima_activacion movimiento Pasillo -1)
+	(ultima_desactivacion estadoluz Pasillo 0)
+	(ultima_activacion movimiento Garaje -1)
+	(ultima_desactivacion estadoluz Garaje 0)
+	(ultima_activacion movimiento Ropero -1)
+	(ultima_desactivacion estadoluz Ropero 0)
+	(ultima_desactivacion movimiento Entrada 0)
+	(ultima_activacion estadoluz Entrada -1)
+	(ultima_desactivacion movimiento Comedor 0)
+	(ultima_activacion estadoluz Comedor -1)
+	(ultima_desactivacion movimiento Salon1 0)
+	(ultima_activacion estadoluz Salon1 -1)
+	(ultima_desactivacion movimiento Salon2 0)
+	(ultima_activacion estadoluz Salon2 -1)
+	(ultima_desactivacion movimiento Dormitorio 0)
+	(ultima_activacion estadoluz Dormitorio -1)
+	(ultima_desactivacion movimiento Cocina 0)
+	(ultima_activacion estadoluz Cocina -1)
+	(ultima_desactivacion movimiento Baño 0)
+	(ultima_activacion estadoluz Baño -1)
+	(ultima_desactivacion movimiento Pasillo 0)
+	(ultima_activacion estadoluz Pasillo -1)
+	(ultima_desactivacion movimiento Garaje 0)
+	(ultima_activacion estadoluz Garaje -1)
+	(ultima_desactivacion movimiento Ropero 0)
+	(ultima_activacion estadoluz Ropero -1))
 
 ;::::::::::: HABITACIONES CON MANEJO INTELIGENTE ::::::::::
 (deffacts Manejo
@@ -321,21 +364,25 @@
 ;::::::::::: REGLA: INDICAR ULTIMA ACTIVACION O DESACTIVACION :::::::::::
 (defrule On2Off
 	(Habitacion ?Hab) ; existe la habitacion
-	(ultimo_registro ?tipo ?Hab ?t1) ; necesitamos saber el timepo del ultimo registrado para obtener su valor
+	?Borrar <- (ultima_desactivacion ?tipo ?Hab ?t)
+	(ultimo_registro ?tipo ?Hab ?t1&:(> ?t1 ?t)) ; necesitamos saber el timepo del ultimo registrado para obtener su valor
 	(valor_registrado ?t1 ?tipo ?Hab off) ; valor registrado que coincide con el ultimo registro
 	(valor_registrado ?t2&~?t1 ?tipo ?Hab $?) ; demás valores de valor_registrado
 	(valor_registrado ?t4&:(and (>= ?t4 ?t2) (< ?t4 ?t1)) ?tipo ?Hab on); valor registrado inmediatamente anterior
 =>
-	(assert (ultima_desactivacion ?tipo ?Hab ?t1) ) )
+	(assert (ultima_desactivacion ?tipo ?Hab ?t1) )
+	(retract ?Borrar) )
 
 (defrule Off2On
 	(Habitacion ?Hab) ; existe la habitacion
-	(ultimo_registro ?tipo ?Hab ?t1) ; necesitamos saber el tiempo del ultimo registrado para obtener su valor
+	?Borrar <- (ultima_activacion ?tipo ?Hab ?t)
+	(ultimo_registro ?tipo ?Hab ?t1&:(> ?t1 ?t)) ; necesitamos saber el tiempo del ultimo registrado para obtener su valor
 	(valor_registrado ?t1 ?tipo ?Hab on) ; valor registrado que coincide con el ultimo registro
 	(valor_registrado ?t2&~?t1 ?tipo ?Hab $?) ; demás valores de valor_registrado
 	(valor_registrado ?t4&:(and (>= ?t4 ?t2) (< ?t4 ?t1)) ?tipo ?Hab off); valor registrado inmediatamente anterior
 =>
-	(assert (ultima_activacion ?tipo ?Hab ?t1) ) )
+	(assert (ultima_activacion ?tipo ?Hab ?t1) )
+	(retract ?Borrar) )
 
 (defrule preInforme
 	(Habitacion ?Hab) ; existe la habitación
@@ -372,7 +419,9 @@
 	?Borrar <- (accion pulsador_luz ?Hab cambiar)
 	(ultimo_registro estadoluz ?Hab on)
 =>
+	(printout t crlf "HE LLEGADO AQUI")
 	(assert (valor estadoluz ?Hab off))
+	(retract ?Borrar)
 	)
 
 (defrule InterruptorCambiarAOn
@@ -380,20 +429,26 @@
 	?Borrar <- (accion pulsador_luz ?Hab cambiar)
 	(ultimo_registro estadoluz ?Hab off)
 =>
+	(printout t crlf "HE LLEGADO AQUI 2")
 	(assert (valor estadoluz ?Hab on))
+	(retract ?Borrar)
 	)
 
 (defrule InterruptorApagar
 	(Habitacion ?Hab)
 	?Borrar <- (accion pulsador_luz ?Hab apagar)
 =>
+	(printout t crlf "HE LLEGADO AQUI 3")
 	(assert (valor estadoluz ?Hab off))
+	(retract ?Borrar)
 	)
 
 (defrule InterruptorEncender
 	(Habitacion ?Hab)
 	?Borrar <- (accion pulsador_luz ?Hab encender)
 =>
+	(printout t crlf "HE LLEGADO AQUI 4")
 	(assert (valor estadoluz ?Hab on))
+	(retract ?Borrar)
 	)
 
