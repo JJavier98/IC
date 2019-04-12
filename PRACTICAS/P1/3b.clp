@@ -87,17 +87,11 @@
     (Habitacion ?Hab1)
     (Manejo_inteligente_luces ?Hab)
     (posible_pasar ?Hab ?Hab1)
-<<<<<<< HEAD
-    (ultimo_registro movimiento ?Hab1 ?Tiempo1)
-    (valor_registrado ?Tiempo1 movimiento ?Hab1 on)
-    (> ?Tiempo1 ?time)
-=======
     (ultima_activacion estadoluz ?Hab ?time2)
     (ultima_desactivacion estadoluz ?Hab ?tim&:(>= ?time2 ?tim))
     (> ?Tiempo1 ?Tiempo)
->>>>>>> fix power off lights
 =>
-    (if(<= (- ?Tiempo1 ?time) 3)
+    (if(<= (- ?Tiempo1 ?Tiempo) 3)
         then
         (assert (accion pulsador_luz ?Hab apagar))
         (retract ?Borrar)
