@@ -1,0 +1,62 @@
+(bombilla Salon1 460)
+(bombilla Salon2 460)
+(bombilla Cocina 270)
+(bombilla Comedor 230)
+(bombilla Entrada 230)
+(bombilla Baño 230)
+(bombilla Dormitorio 230)
+(luminosidad Salon1 32)
+(luminosidad Salon2 32)
+(luminosidad Cocina 19)
+(luminosidad Comedor 12)
+(luminosidad Entrada 30)
+(luminosidad Baño 30)
+(luminosidad Dormitorio 30)
+
+
+;;; Persona sola en Salon1 desde las 10 hasta las 11:10, sale a las 11:10 al  Entrada y despues a la cocina donde permanece hasta las 11:30 y vuelve
+;;; al Salon1
+
+
+(manejoluces Salon1)
+(manejoluces Entrada)
+(manejoluces Comedor)
+
+; Enciende la luz del Salon1
+(datosensor 10 0 0 pulsador Salon1 on)
+
+; Está en el salón
+(datosensor 10 0 1 movimiento Salon1 on)
+
+; Apaga la luz del Salon1 y sale a la Entrada
+(datosensor 11 10 14 pulsador Salon1 off)
+(datosensor  11 10 15  movimiento Entrada on)
+
+;Entra en el Comedor
+(datosensor  11 10 17  movimiento Comedor on)
+
+; Salon1 sin movimiento
+(datosensor  11 11 1  movimiento Salon1 off)
+
+; Entrada sin movimiento
+(datosensor  11 11 15  movimiento Entrada off)
+
+; Sale a la Entrada
+(datosensor  11 30 43  movimiento Entrada on)
+
+;Entra en el Comedor
+(datosensor  11 30 17  movimiento Comedor off)
+
+; Enciende la luz del Salon1
+(datosensor 11 30 44 pulsador Salon1 on)
+
+;Entra en el Salon1
+(datosensor  11 30 45  movimiento Salon1 on)
+
+;Entrada sin movimiento
+(datosensor  11 31 17  movimiento Entrada off)
+
+; Entrada sin movimiento
+(datosensor  11 31 43  movimiento Entrada off)
+
+

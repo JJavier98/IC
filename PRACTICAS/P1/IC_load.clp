@@ -153,45 +153,25 @@
 ;::::::::::: VALORES DE SENSORES QUE ME TIENEN QUE PROPORCIONAR - ESTOS SON DE PRUEBA ::::::::::
 (deffacts UltimasDesactivacionesYActivaciones
 	(ultima_activacion movimiento Entrada -1)
-	(ultima_desactivacion estadoluz Entrada 0)
 	(ultima_activacion movimiento Comedor -1)
-	(ultima_desactivacion estadoluz Comedor 0)
 	(ultima_activacion movimiento Salon1 -1)
-	(ultima_desactivacion estadoluz Salon1 0)
 	(ultima_activacion movimiento Salon2 -1)
-	(ultima_desactivacion estadoluz Salon2 0)
 	(ultima_activacion movimiento Dormitorio -1)
-	(ultima_desactivacion estadoluz Dormitorio 0)
 	(ultima_activacion movimiento Cocina -1)
-	(ultima_desactivacion estadoluz Cocina 0)
 	(ultima_activacion movimiento Baño -1)
-	(ultima_desactivacion estadoluz Baño 0)
 	(ultima_activacion movimiento Pasillo -1)
-	(ultima_desactivacion estadoluz Pasillo 0)
 	(ultima_activacion movimiento Garaje -1)
-	(ultima_desactivacion estadoluz Garaje 0)
 	(ultima_activacion movimiento Ropero -1)
-	(ultima_desactivacion estadoluz Ropero 0)
 	(ultima_desactivacion movimiento Entrada 0)
-	(ultima_activacion estadoluz Entrada -1)
 	(ultima_desactivacion movimiento Comedor 0)
-	(ultima_activacion estadoluz Comedor -1)
 	(ultima_desactivacion movimiento Salon1 0)
-	(ultima_activacion estadoluz Salon1 -1)
 	(ultima_desactivacion movimiento Salon2 0)
-	(ultima_activacion estadoluz Salon2 -1)
 	(ultima_desactivacion movimiento Dormitorio 0)
-	(ultima_activacion estadoluz Dormitorio -1)
 	(ultima_desactivacion movimiento Cocina 0)
-	(ultima_activacion estadoluz Cocina -1)
 	(ultima_desactivacion movimiento Baño 0)
-	(ultima_activacion estadoluz Baño -1)
 	(ultima_desactivacion movimiento Pasillo 0)
-	(ultima_activacion estadoluz Pasillo -1)
 	(ultima_desactivacion movimiento Garaje 0)
-	(ultima_activacion estadoluz Garaje -1)
-	(ultima_desactivacion movimiento Ropero 0)
-	(ultima_activacion estadoluz Ropero -1))
+	(ultima_desactivacion movimiento Ropero 0))
 
 ;::::::::::: HABITACIONES CON MANEJO INTELIGENTE ::::::::::
 (deffacts Manejo
@@ -216,13 +196,6 @@
 	(luminosidad_maxima Dormitorio 1000)
 	(luminosidad_maxima Cocina 600)
 	(luminosidad_maxima Baño 400)
-	;(estado_habitacion Comedor vacia)
-	;(estado_habitacion Entrada vacia)
-	;(estado_habitacion Salon1 vacia)
-	;(estado_habitacion Salon2 vacia)
-	;(estado_habitacion Dormitorio vacia)
-	;(estado_habitacion Cocina vacia)
-	;(estado_habitacion Baño vacia)
 	)
 
 ;::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -336,9 +309,11 @@
 (defrule NecesarioPasar
 	(posible_pasar ?Hab1 ?Hab2)
 	(not (posible_pasar ?Hab1 ?Hab3&~?Hab2))
+	(not (posible_pasar ?Hab4&~?Hab1 ?Hab2))
         (Habitacion ?Hab1)
         (Habitacion ?Hab2)
         (Habitacion ?Hab3)
+        (Habitacion ?Hab4)
 =>
 	(assert (necesario_pasar ?Hab1 ?Hab2)))
 
@@ -364,54 +339,58 @@
 ;::::::::::: REGLA: INDICAR ULTIMA ACTIVACION O DESACTIVACION :::::::::::
 (defrule On2Off
 	(Habitacion ?Hab) ; existe la habitacion
-	?Borrar <- (ultima_desactivacion ?tipo ?Hab ?t)
-	(ultimo_registro ?tipo ?Hab ?t1&:(> ?t1 ?t)) ; necesitamos saber el timepo del ultimo registrado para obtener su valor
-	(valor_registrado ?t1 ?tipo ?Hab off) ; valor registrado que coincide con el ultimo registro
-	(valor_registrado ?t2&~?t1 ?tipo ?Hab $?) ; demás valores de valor_registrado
-	(valor_registrado ?t4&:(and (>= ?t4 ?t2) (< ?t4 ?t1)) ?tipo ?Hab on); valor registrado inmediatamente anterior
+	?Borrar <- (ultima_desactivacion movimiento ?Hab ?t)
+	(ultima_activacion movimiento ?Hab ?time2 &: (> ?time2 ?t))
+	(ultimo_registro movimiento ?Hab ?t1&:(> ?t1 ?time2)) ; necesitamos saber el timepo del ultimo registrado para obtener su valor
+	(valor_registrado ?t1 movimiento ?Hab off) ; valor registrado que coincide con el ultimo registro
+	(valor_registrado ?t2 movimiento ?Hab $?) ; demás valores de valor_registrado
+	(valor_registrado ?t4&:(and (>= ?t4 ?t2) (< ?t4 ?t1)) movimiento ?Hab on); valor registrado inmediatamente anterior
 =>
-	(assert (ultima_desactivacion ?tipo ?Hab ?t1) )
+	(assert (ultima_desactivacion movimiento ?Hab ?t1) )
 	(retract ?Borrar) )
 
 (defrule Off2On
 	(Habitacion ?Hab) ; existe la habitacion
-	?Borrar <- (ultima_activacion ?tipo ?Hab ?t)
-	(ultimo_registro ?tipo ?Hab ?t1&:(> ?t1 ?t)) ; necesitamos saber el tiempo del ultimo registrado para obtener su valor
-	(valor_registrado ?t1 ?tipo ?Hab on) ; valor registrado que coincide con el ultimo registro
-	(valor_registrado ?t2&~?t1 ?tipo ?Hab $?) ; demás valores de valor_registrado
-	(valor_registrado ?t4&:(and (>= ?t4 ?t2) (< ?t4 ?t1)) ?tipo ?Hab off); valor registrado inmediatamente anterior
+	?Borrar <- (ultima_activacion movimiento ?Hab ?t)
+	(ultima_desactivacion movimiento ?Hab ?time2 &: (> ?time2 ?t))
+	(ultimo_registro movimiento ?Hab ?t1&:(>= ?t1 ?time2)) ; necesitamos saber el tiempo del ultimo registrado para obtener su valor	
+	(valor_registrado ?t1 movimiento ?Hab on) ; valor registrado que coincide con el ultimo registro
+	(valor_registrado ?t2 movimiento ?Hab $?) ; demás valores de valor_registrado
+	(valor_registrado ?t4&:(and (>= ?t4 ?t2) (< ?t4 ?t1)) movimiento ?Hab off); valor registrado inmediatamente anterior
+
 =>
-	(assert (ultima_activacion ?tipo ?Hab ?t1) )
+	(assert (ultima_activacion movimiento ?Hab ?t1) )
 	(retract ?Borrar) )
 
-(defrule preInforme
-	(Habitacion ?Hab) ; existe la habitación
-	?Borrar <- (informe ?Hab) ; borramos el hecho que nos pide el informe
-	(valor_registrado ?t1 ? ?Hab ?) ; cogemos el conjunto de todos los valores registrados
-	(valor_registrado ?t2&:(>= ?t2 ?t1) ?tipo2 ?Hab ?value2) ; cogemos el valor registrado con mayor tiempo, es decir, el más reciente
+(defrule duplicaInforme
+	(informe ?Hab)
+	(valor_registrado ?time ?tipo ?Hab ?value)
+	(not(no_procesado ?time ?tipo ?Hab ?value))
 =>
-	(assert(preInf ?t2 ?tipo2 ?Hab ?value2) ) ; añadimos el hecho de que hemos empezado el preinforme
-	(retract ?Borrar) ; Borramos el hecho que pide el informe
-	(printout t "INFORME: " crlf) ; imprimimos el informe
-	(printout t crlf "Tiempo: " ?t2 " Tipo: " ?tipo2 " Habitación: " ?Hab " Valor: " ?value2))
-
-(defrule Informe
-	(Habitacion ?Hab) ; existe la habitación
-	?Borrar <- (preInf ?t1 ?tipo ?Hab ?value) ; borramos el último hecho de preinforme generado
-	(valor_registrado ?t2&~?t1 ?tipo2 ?Hab ?value2) ; cogemos todo el conjunto de valores registrados que no cincidan con el de preinforme
-	(valor_registrado ?t3&:(and (>= ?t3 ?t2) (< ?t3 ?t1)) ?tipo3 ?Hab ?value3) ; cogemos el más reciente de los valores registrados que sea menor que preinforme
-=>
-	(retract ?Borrar) ; borramos el preinforme
-	(assert (preInf ?t3 ?tipo3 ?Hab ?value3)) ; incluimos un preinforme con el nuevo valor
-	(printout t crlf "Tiempo: " ?t3 " Tipo: " ?tipo3 " Habitación: " ?Hab " Valor: " ?value3) ; inmprimimos el informe
+	(assert (no_procesado ?time ?tipo ?Hab ?value))
 	)
 
-(defrule posInforme
-	(Habitacion ?Hab) ; existe la habitación
-	?Borrar <- (preInf ?t1 ?tipo ?Hab ?value) ; 
+(defrule finDuplica
+	?Borrar <- (informe ?Hab)
+	(not
+		(and
+			(valor_registrado ?time ?tipo ?Hab ?value)
+			(not (no_procesado ?time ?tipo ?Hab ?value))
+		)
+	)
 =>
 	(retract ?Borrar)
-)
+	(printout t "INFORME: " crlf)
+	)
+
+(defrule imprimeInforme
+	(not (informe ?Hab))
+	?Borrar <- (no_procesado ?t1 ?tipo ?Hab ?v)
+	(not (no_procesado ?t2 &: (> ?t2 ?t1) ? ?Hab ?))
+=>
+	(printout t "Tiempo: " ?t1 " Tipo: " ?tipo " Habitación: " ?Hab " Valor: " ?v crlf)
+	(retract ?Borrar)
+	)
 
 ;::::::::::: REGLA: INTERRUPTORES :::::::::::
 (defrule InterruptorCambiarAOff
