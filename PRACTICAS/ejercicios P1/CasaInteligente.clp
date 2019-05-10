@@ -381,8 +381,8 @@
     ?Borrar <- (valor ?tipo ?Hab ?value) ; guardar el índice del hecho que ha activado el cambio para borrarlo
     ?Borrar1 <- (ultimo_registro ?tipo ?Hab ?time) ; guardar el índice del ultimo_registro para borrarlo y así, actualizarlo
 =>
-    (bind ?Tiempo ?*transcurrido* ) ; guardamos en una variable la hora del sistema para que coincida en todos los asserts   
-    ;(bind ?Tiempo (totalsegundos (horasistema) (minutossistema) (segundossistema)) ) ; guardamos en una variable la hora del sistema para que coincida en todos los asserts
+    ;(bind ?Tiempo ?*transcurrido* ) ; guardamos en una variable la hora del sistema para que coincida en todos los asserts   
+    (bind ?Tiempo (totalsegundos (horasistema) (minutossistema) (segundossistema)) ) ; guardamos en una variable la hora del sistema para que coincida en todos los asserts
     (assert (valor_registrado ?Tiempo ?tipo ?Hab ?value)) ; registramos el nuevo valor registrado por el sensor
     (assert (ultimo_registro ?tipo ?Hab ?Tiempo )) ; actualizamos el último registro del sensor
     (retract ?Borrar) ; borramos el hecho de activación
