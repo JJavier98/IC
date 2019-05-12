@@ -72,18 +72,27 @@
 ;::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ;::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-(defrule estoyDesocupado
-	($?algo)
+(defrule estoyDesocupado ; iniciamos la espera
+	(declare (salience -1000)) ; muy poca prioridad para que solo se ejecute si no hay hechos
 =>
-    (bind ?Tiempo (totalsegundos (horasistema) (minutossistema) (segundossistema)) ) ; guardamos en una variable la hora del sistema para que coincida en todos los asserts
-    (assert (esperando ?Tiempo))
+	(assert (esperando (totalsegundos (horasistema) (minutossistema) (segundossistema)))) ; crea hecho con un tiempo
+)
+
+(defrule estoyDesocupado1 ; ya existe el hecho esperando
+    (declare (salience -999)) ; poca prioridad
+    ?borrar <- (esperando ?t) ; existe el hecho esperando
+=>
+    (retract ?borrar) ; borramos y actualizamos
+    (assert (esperando ?t))
 )
 
 (defrule estoyDesocupado2
-	?Borrar <- (esperando ?t)
-	(>= (- (totalsegundos (horasistema) (minutossistema) (segundossistema)) ?t) 60)
+    (declare (salience -998)) ; el que más prioridad tiene de los tres
+    ; si han pasado 60 segundos o más
+    ?borrar <- (esperando ?time&:(>= (- (totalsegundos (horasistema) (minutossistema) (segundossistema)) ?time) 60))
 =>
-	(retract ?Borrar)
-	(assert (esperando (totalsegundos (horasistema) (minutossistema) (segundossistema))))
-    (printout t "Estoy esperando nueva información" crlf)
+    (bind ?tiempo (totalsegundos (horasistema) (minutossistema) (segundossistema))) ; guardamos el tiempo actual
+    (printout t "Estoy esperando nueva información" crlf) ; imprimimos por pantalla
+    (assert (esperando ?tiempo)) ; actualizamos el hecho esperando
+    (retract ?borrar)
 )
